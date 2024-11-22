@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="{% static 'contact/contact.css' %}"> -->
+<style>
+/* contact/static/contact/contact.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1.one {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ins, .dis, .del, .updt {
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button, .btn1, .btn2, .btn4 {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover, .btn1:hover, .btn2:hover, .btn4:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table th {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+}
+
+</style>
+</head>
+<body>
+    <h1 class="one">Phone Book</h1>
+    <div class="ins">
+        <form action="{% url 'addphone' %}" class="insert" method="POST">
+            {% csrf_token %}
+            <label for="">Name</label>
+            <input type="text" name="name" required><br><br>
+            <label for="">Phone</label>
+            <input type="number" name="phone" required><br>
+            <input type="submit" name="btn" value="Insert" class="btn1">
+        </form>
+        {% if key %}
+            <p>{{ key }}</p>
+        {% endif %}
+    </div>
+    
+    <div class="dis">
+        <form action="{% url 'display_contacts' %}" method="get">
+            <table border="1">
+                <input type="submit" value="Display" class="btn2">
+                <tr>
+                    <td>Name</td>
+                    <td>Phone</td>
+                </tr>
+                {% for i in phn %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.phone }}</td>
+                </tr>
+                {% endfor %}
+            </table><br>
+        </form>
+    </div><br>
+
+    <div class="del">
+        <form action="{% url 'delete_contact' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Enter name to delete" required>
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+
+    <div class="updt">
+        <form action="{% url 'update' %}" method="POST" class="up">
+            {% csrf_token %}
+            <label for="">Old Name</label>
+            <input type="text" name="oldname" required><br><br>
+            <label for="">New Name</label>
+            <input type="text" name="newname" required><br>
+            <input type="submit" value="Update" class="btn4"><br>
+        </form>
+        
+        {% if key2 %}
+            <p>{{ key2 }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
